@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dbank.dao.UserDao">
+
+    <insert id="addUser" parameterType="User">
+        insert into
+            t_user(userUUID,userName,password,sex,email,registerTime,identity)
+        values
+            (#{userUUID},#{userName},#{password},#{sex},#{email},#{registerTime},#{identity});
+    </insert>
+
+    <select id="login" parameterType="String" resultType="User">
+        select * from t_user u
+        <where>
+            <if test="userName != null and userName != ''">
+                and u.userName = #{userName}
+            </if>
+            <if test="password != null and password != ''">
+                and u.password = #{password}
+            </if>
+            <if test="identity != null and identity != ''">
+                and u.identity = #{identity}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateUser" >
+        update t_user u
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">u.userName = #{userName},</if>
+            <if test="password != null and password != ''">u.password = #{password},</if>
+            <if test="sex != null and sex != ''">u.sex = #{sex},</if>
+            <if test="email != null and email != ''">u.email = #{email},</if>
+        </trim>
+        where u.userUUID = #{userUUID}
+    </update>
+
+    <select id="selectOneByUserUUID" resultType="User">
+        select * from t_user
+            where userUUID = #{userUUID}
+    </select>
+
+    <select id="selectOneByUserName" resultType="User">
+        select * from t_user
+        where UserName = #{UserName}
+    </select>
+
+    <select id="selectAll" resultType="User">
+        select * from t_user
+    </select>
+
+    <select id="getUserName">
+        select userName from t_user
+            where userUUID = #{userUUID}
+    </select>
+
+    <select id="getUserUUID">
+        select userUUID from t_user
+            where userName = #{userName}
+    </select>
+
+    <select id="getTotalByCondition" parameterType="Map" resultType="Long">
+        select count(*) from t_user u
+        <where>
+            <if test="userName != null and userName != ''">
+                and u.userName like '%' #{userName} '%'
+            </if>
+            <if test="sex != null and sex != ''">
+                and u.sex = #{sex}
+            </if>
+            <if test="registerTime != null and registerTime != ''">
+                and u.registerTime like '%' #{registerTime} '%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getDataListByCondition" parameterType="Map" resultType="User">
+        select
+            u.*
+        from
+            t_user u
+        <where>
+            <if test="userName != null and userName != ''">
+                and u.userName like '%' #{userName} '%'
+            </if>
+            <if test="sex != null and sex != ''">
+                and u.sex = #{sex}
+            </if>
+            <if test="registerTime != null and registerTime != ''">
+                and u.registerTime like '%' #{registerTime} '%'
+            </if>
+        </where>
+        order by
+            u.registerTime asc
+        limit
+            #{startIndex} , #{pageSize}
+    </select>
+
+    <delete id="deleteOne">
+        delete from t_user
+            where userUUID = #{userUUID}
+    </delete>
+
+</mapper>

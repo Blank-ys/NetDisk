@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dbank.dao.UserFileDao">
+
+    <insert id="addFile" parameterType="UserFile">
+        insert into t_file
+            (fileUUID,fileName,fileSize,filePath,uploadTime,isFolder,isValid,uid)
+        values
+               (#{fileUUID},#{fileName},#{fileSize},#{filePath},#{uploadTime},#{isFolder},#{isValid},#{uid})
+    </insert>
+
+    <delete id="deleteFileByUid">
+        delete from t_file where uid = #{uid}
+    </delete>
+
+    <delete id="deleteFileByFileUUID">
+        delete from t_file f where fileUUID = #{fileUUID}
+    </delete>
+
+    <select id="selectAllFiles" resultType="UserFile">
+        select * from t_userFile
+    </select>
+
+    <select id="getAllFilesByUid" resultType="UserFile">
+        select
+            *
+        from
+            t_file f
+        join
+            t_user u
+        on
+            u.userUUID = f.uid
+        where
+            f.uid = #{uid}
+    </select>
+
+    <select id="getFileByFileUUID" resultType="UserFile">
+        select * from t_file where fileUUID = #{fileUUID}
+    </select>
+
+    <select id="getFilePathByFileUUID" resultType="String">
+        select filePath from t_file where fileUUID = #{fileUUID}
+    </select>
+
+    <select id="getFileNameByFileUUID" resultType="String">
+        select fileName from t_file where fileUUID = #{fileUUID}
+    </select>
+
+    <update id="updateFileByFileUUID">
+        update t_file set fileName = #{fileName} and filePath = #{filePath}
+            where fileUUID = #{fileUUID}
+    </update>
+
+    <update id="updateIsChecked">
+        update t_file set isChecked = #{isChecked}
+            where fileUUID = #{fileUUID}
+    </update>
+
+    <select id="getTotalByCondition" parameterType="Map" resultType="Long">
+        select
+            count(*)
+        from
+            t_userFile f
+        join
+            t_user u
+        on
+            f.uid = u.userUUID
+        <where>
+            <if test="userUUID != null and userUUID != ''">
+                and u.userUUID like '%' #{userUUID} '%'
+            </if>
+            <if test="fileUUID != null and fileUUID != ''">
+                and f.fileUUID like '%' #{fileUUID} '%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getFileListByCondition" parameterType="Map" resultType="UserFile">
+        select
+            u.userName,f.uploadTime,f.fileName,f.isChecked
+        from
+            t_userFile f
+        join
+            t_user u
+        on
+            f.uid = u.userUUID
+        <where>
+            <if test="userUUID != null and userUUID != ''">
+                and u.userUUID like '%' #{userUUID} '%'
+            </if>
+            <if test="fileUUID != null and fileUUID != ''">
+                and f.fileUUID like '%' #{fileUUID} '%'
+            </if>
+        </where>
+        order by
+            f.uploadTime desc
+        limit
+            #{startIndex} , #{pageSize}
+    </select>
+
+</mapper>
