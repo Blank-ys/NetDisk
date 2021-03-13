@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = { "/manager/userPage.do", "/userController/delUser", "/manager/filePage.do", "/userController/getUsers","/checkController/getFiles", "/checkController/getFiles" })
+@WebServlet(urlPatterns = { "/manager/userPage.do", "/userController/delUser", "/manager/filePage.do", "/userController/getUsers","/checkController/getFiles", "/checkController/checkFiles" })
 public class ManagerPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -38,7 +38,7 @@ public class ManagerPageServlet extends HttpServlet {
             doUserList(request,response);
         }else if("/checkController/getFiles".equals(servletPath)){ //查询文件列表
             doFileList(request,response);
-        }else if("/checkController/getFiles".equals(servletPath)){
+        }else if("/checkController/checkFiles".equals(servletPath)){
             doCheckFile(request,response);
         }
     }
