@@ -21,12 +21,7 @@ public class UserLoginServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        String identity;
-        if("admin".equals(userName)){
-            identity = "manager";
-        }else{
-            identity = "user";
-        }
+        String identity = "user";
 
         UserService userService = (UserService) new TransactionHandler(new UserServiceImpl()).getProxy();
         User user = userService.userLoginByUserNameAndPassword(userName,password,identity);
