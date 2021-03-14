@@ -30,7 +30,7 @@ public class ManagerPageServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         if("/manager/userPage.do".equals(servletPath)){ //分页条件查询用户
             listUsersByCondition(request,response);
-        }else if("userController/delUser".equals(servletPath)){ //删除用户
+        }else if("/userController/delUser".equals(servletPath)){ //删除用户
             deleteUserAndFiles(request,response);
         }else if("/manager/filePage.do".equals(servletPath)){ //分页条件查询文件
             listFilesByCondition(request,response);
@@ -38,7 +38,7 @@ public class ManagerPageServlet extends HttpServlet {
             doUserList(request,response);
         }else if("/checkController/getFiles".equals(servletPath)){ //查询文件列表
             doFileList(request,response);
-        }else if("/checkController/checkFiles".equals(servletPath)){
+        }else if("/checkController/checkFiles".equals(servletPath)){ //审核文件
             doCheckFile(request,response);
         }
     }
