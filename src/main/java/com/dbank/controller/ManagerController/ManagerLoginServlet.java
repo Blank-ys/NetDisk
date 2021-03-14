@@ -34,9 +34,6 @@ public class ManagerLoginServlet extends HttpServlet {
             ObjectMapper om = new ObjectMapper();
             String json = om.writeValueAsString(user);
             response.getWriter().print(json);
-
-            //测试
-            response.sendRedirect("/web/manager_index.html");
         }
     }
 }
